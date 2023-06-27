@@ -1,4 +1,4 @@
-export { BlogPostList } from "./list";
-export { BlogPostCreate } from "./create";
-export { BlogPostEdit } from "./edit";
-export { BlogPostShow } from "./show";
+export { BlogPostList } from "./pages/list";
+export { BlogPostCreate } from "./pages/create";
+export { BlogPostEdit } from "./pages/edit";
+export { BlogPostShow } from "./pages/show";

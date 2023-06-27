@@ -19,13 +19,10 @@ import routerBindings, { NavigateToResource, CatchAllNavigate, UnsavedChangesNot
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BlogPostList, BlogPostCreate, BlogPostEdit, BlogPostShow } from "./pages/blog-posts";
-import { CategoryList, CategoryCreate, CategoryEdit, CategoryShow } from "./pages/categories";
+
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Header } from "./components/header";
 import { Login } from "./pages/login";
-
-
-
 
 
 function App() {
@@ -98,13 +95,12 @@ Authorization: `Bearer ${token.__raw}`
     
     return (
         <BrowserRouter>
-        <GitHubBanner />
         <RefineKbarProvider>
             <ColorModeContextProvider>
             <Refine dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
-notificationProvider={notificationProvider}
-routerProvider={routerBindings}
-authProvider={authProvider} 
+                    notificationProvider={notificationProvider}
+                    routerProvider={routerBindings}
+                    authProvider={authProvider} 
                     resources={[
                         {
                             name: "blog_posts",
@@ -116,16 +112,7 @@ authProvider={authProvider}
                                 canDelete: true,
                             },
                         },
-                        {
-                            name: "categories",
-                            list: "/categories",
-                            create: "/categories/create",
-                            edit: "/categories/edit/:id",
-                            show: "/categories/show/:id",
-                            meta: {
-                                canDelete: true,
-                            },
-                        },
+                        
                     ]}
                 options={{
                     syncWithLocation: true,
@@ -156,12 +143,7 @@ authProvider={authProvider}
                             <Route path="edit/:id" element={<BlogPostEdit />} />
                             <Route path="show/:id" element={<BlogPostShow />} />
                         </Route>
-                        <Route path="/categories">
-                            <Route index element={<CategoryList />} />
-                            <Route path="create" element={<CategoryCreate />} />
-                            <Route path="edit/:id" element={<CategoryEdit />} />
-                            <Route path="show/:id" element={<CategoryShow />} />
-                        </Route>
+                       
                         <Route path="*" element={<ErrorComponent />} />
                     </Route>
                     <Route
