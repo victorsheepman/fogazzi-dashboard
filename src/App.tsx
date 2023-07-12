@@ -18,12 +18,15 @@ import { BrowserRouter, Route, Routes, Outlet } from "react-router-dom";
 import routerBindings, { NavigateToResource, CatchAllNavigate, UnsavedChangesNotifier, DocumentTitleHandler } from "@refinedev/react-router-v6";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
-import { BlogPostList, BlogPostCreate, BlogPostEdit, BlogPostShow } from "./pages/blog-posts";
 
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Header } from "./components/header";
 import { Login } from "./pages/login";
+import { Products } from './pages/pulseras/pages/Products';
+import React from 'react';
 
+
+const API = "/api";
 
 function App() {
     const { isLoading, user, logout, getIdTokenClaims } = useAuth0();
@@ -97,20 +100,19 @@ Authorization: `Bearer ${token.__raw}`
         <BrowserRouter>
         <RefineKbarProvider>
             <ColorModeContextProvider>
-            <Refine dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+            <Refine dataProvider={
+                {
+                    default: dataProvider(API),
+                    api: dataProvider(API),
+                }
+            }
                     notificationProvider={notificationProvider}
                     routerProvider={routerBindings}
                     authProvider={authProvider} 
                     resources={[
                         {
-                            name: "blog_posts",
-                            list: "/blog-posts",
-                            create: "/blog-posts/create",
-                            edit: "/blog-posts/edit/:id",
-                            show: "/blog-posts/show/:id",
-                            meta: {
-                                canDelete: true,
-                            },
+                            name: "bracelets",
+                            list: "/bracelets",
                         },
                         
                     ]}
@@ -134,16 +136,10 @@ Authorization: `Bearer ${token.__raw}`
                             </Authenticated>
                         }
                     >
-                        <Route index element={
-                                <NavigateToResource resource="blog_posts" />
-                        } />
-                        <Route path="/blog-posts">
-                            <Route index element={<BlogPostList />} />
-                            <Route path="create" element={<BlogPostCreate />} />
-                            <Route path="edit/:id" element={<BlogPostEdit />} />
-                            <Route path="show/:id" element={<BlogPostShow />} />
-                        </Route>
                        
+                        <Route path="/bracelets">
+                            <Route index element={<Products />} />
+                        </Route>
                         <Route path="*" element={<ErrorComponent />} />
                     </Route>
                     <Route
