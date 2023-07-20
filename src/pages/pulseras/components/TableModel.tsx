@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import { IBracelet } from '../../../interfaces/bracelets';
 import { Tag, Table, Spin, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useTable, List, NumberField } from '@refinedev/antd';
-import { HttpError, useDelete, useList } from '@refinedev/core';
+import { HttpError, LiveProvider, useDelete, useList } from '@refinedev/core';
 import { style } from 'typestyle';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { IModelo, Color } from '../../../interfaces/Modelos';
@@ -22,10 +22,10 @@ export const TableModel: React.FC<TableModelProps> = ({ showDrawer }) => {
     resource: 'modelos',
   });
 
-  // Data
-  const { isLoading, data } = tableQueryResult;
-  const bracelets: IBracelet[] | undefined = data?.data;
 
+  // Data
+  const { isLoading, data, refetch } = tableQueryResult;
+  
   // Methods
   const deleteBraceletById = async (id: string) => {
     try {
@@ -58,7 +58,7 @@ export const TableModel: React.FC<TableModelProps> = ({ showDrawer }) => {
   };
 
   const ColorOptions = useMemo(() => {
-    const allColors = bracelets?.map((item) => item.color) || [];
+    const allColors = data?.data?.map((item) => item.color) || [];
     const uniqueColors = [...new Set(allColors)];
 
     return uniqueColors.map((colorId) => {
@@ -68,7 +68,7 @@ export const TableModel: React.FC<TableModelProps> = ({ showDrawer }) => {
         value: color?.hex || '',
       };
     });
-  }, [bracelets, getColorById]);
+  }, [data?.data, getColorById]);
 
   // Options
   const columns: ColumnsType<IBracelet> = [
@@ -77,7 +77,7 @@ export const TableModel: React.FC<TableModelProps> = ({ showDrawer }) => {
       dataIndex: 'model',
       key: 'model',
       filterMode: 'tree',
-      filters: [...new Set(bracelets?.map((bracelet) => bracelet.model))].map((model) => ({
+      filters: [...new Set(data?.data?.map((bracelet) => bracelet.model))].map((model) => ({
         text: `Modelo ${model}`,
         value: model,
       })),
@@ -130,6 +130,7 @@ export const TableModel: React.FC<TableModelProps> = ({ showDrawer }) => {
   ];
 
   return (
+
     <List
       headerProps={{
         extra: <Button type="primary" icon={<PlusOutlined />} onClick={showDrawer} />,
@@ -140,7 +141,7 @@ export const TableModel: React.FC<TableModelProps> = ({ showDrawer }) => {
           <Spin />
         </div>
       ) : (
-        <Table dataSource={bracelets} columns={columns} />
+        <Table dataSource={data?.data} columns={columns} />
       )}
     </List>
   );
