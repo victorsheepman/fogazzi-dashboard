@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
-import { TableModel } from '../components'
-import { Drawer } from 'antd'
-import { CreateManyProductsForm } from '../components/CreateManyProductsForm';
-
+import React, { useState } from "react";
+import { TableModel } from "../components";
+import { Drawer } from "antd";
+import { CreateManyProductsForm } from "../components/CreateManyProductsForm";
 
 export const Products = () => {
   const [open, setOpen] = useState(false);
@@ -17,11 +16,15 @@ export const Products = () => {
 
   return (
     <>
-     
-      <Drawer title="Crear pulcera" placement="right" onClose={onClose} open={open}>
+      <Drawer
+        title="Crear pulcera"
+        placement="right"
+        onClose={onClose}
+        open={open}
+      >
         <CreateManyProductsForm />
       </Drawer>
-    <TableModel showDrawer={showDrawer} onClose={onClose} />
-   </>
-  )
-}
+      <TableModel showDrawer={showDrawer} />
+    </>
+  );
+};
